@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Soil Moisture Control Panel</title>
+  <link rel="stylesheet" href="style1.css">
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>🌱 Soil Monitor</h1>
+    <div class="status">
+      <span class="label">Soil Status:</span>
+      <span id="status" class="value">Loading...</span>
+    </div>
+    <div class="status">
+      <span class="label">Analog Value:</span>
+      <span id="analog" class="value">Loading...</span>
+    </div>
+    <div class="status">
+      <span class="label">Pump Status:</span>
+      <span id="pump" class="value">Loading...</span>
+    </div>
+    <div class="footer">ESP32 IOT Project Dashboard</div>
+  </div>
+
+  <script>
+    // Replace with your actual Firebase config
+    const firebaseConfig = {
+      apiKey: "YAIzaSyDLu7SoqRxPlOLMqWn41y8StaGvbcKtdKM",
+      databaseURL: "https://esp32iot-6d498-default-rtdb.firebaseio.com/",
+      authDomain: "esp32iot-6d498.firebaseapp.com",
+      projectId: "esp32iot-6d498",
+      storageBucket: "esp32iot-6d498.firebasestorage.app",
+      messagingSenderId: "251506768831",
+      appId: "1:251506768831:web:1a1ac0671e1442ca7cbf0a"
+    };
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    db.ref("soil_moisture/soil_status").on("value", (snap) => {
+      document.getElementById("status").textContent = snap.val();
+    });
+
+    db.ref("soil_moisture/analog_value").on("value", (snap) => {
+      document.getElementById("analog").textContent = snap.val();
+    });
+
+    db.ref("pump_status").on("value", (snap) => {
+      document.getElementById("pump").textContent = snap.val() === 1 ? "ON" : "OFF";
+    });
+  </script>
+</body>
+</html>
